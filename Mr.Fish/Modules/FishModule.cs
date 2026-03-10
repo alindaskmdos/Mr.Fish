@@ -21,9 +21,9 @@ public class FishModule(FishingService fishingService, LeaderboardRepository lea
 
         string reply = $"**{fish.AdjectiveName} {fishName}**\n\n" +
                        $"{description} \n\n" +
-                       $"**Вес:** `{fish.WeightKg} кг`\n" +
+                       $"**Вес:** `{fish.WeightKg:F6} кг`\n" +
                        $"**Редкость:** `{fish.Rarity}` \n" +
-                       $"**Очки:** `{fish.Points}`";
+                       $"**Очки:** `{fish.Points:F2}`";
 
         await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
             new DiscordInteractionResponseBuilder().WithContent(reply).AsEphemeral(true));

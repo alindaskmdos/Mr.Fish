@@ -28,7 +28,7 @@ public class LeaderboardRepository(string connectionString)
         await command.ExecuteNonQueryAsync();
     }
 
-    public async Task<List<FishCatch>> GetTop10Best()
+    public async Task<List<FishCatch>> GetTop10BestByPoints()
     {
         var result = new List<FishCatch>();
 
@@ -47,7 +47,7 @@ public class LeaderboardRepository(string connectionString)
                 FishName = (string)reader["fish_name"],
                 AdjectiveName = (string)reader["adjective"],
                 WeightKg = (decimal)(double)reader["weight_kg"],
-                Points = (int)(long)reader["points"],
+                Points = (decimal)(double)reader["points"],
                 Rarity = (int)(long)reader["rarity"],
                 IsSpecial = (long)reader["is_special"] == 1,
                 CaughtAt = DateTime.Parse((string)reader["caught_at"])
@@ -59,7 +59,7 @@ public class LeaderboardRepository(string connectionString)
         return result;
     }
 
-    public async Task<List<FishCatch>> GetTop10Worse()
+    public async Task<List<FishCatch>> GetTop10WorstByPoints()
     {
         var result = new List<FishCatch>();
 
@@ -78,7 +78,69 @@ public class LeaderboardRepository(string connectionString)
                 FishName = (string)reader["fish_name"],
                 AdjectiveName = (string)reader["adjective"],
                 WeightKg = (decimal)(double)reader["weight_kg"],
-                Points = (int)(long)reader["points"],
+                Points = (decimal)(double)reader["points"],
+                Rarity = (int)(long)reader["rarity"],
+                IsSpecial = (long)reader["is_special"] == 1,
+                CaughtAt = DateTime.Parse((string)reader["caught_at"])
+            };
+
+            result.Add(fish);
+        }
+
+        return result;
+    }
+
+    public async Task<List<FishCatch>> GetTop10BestByWeight()
+    {
+        var result = new List<FishCatch>();
+
+        await using var connection = new SqliteConnection(connectionString);
+        await connection.OpenAsync();
+
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT * FROM leaderboard ORDER BY weight_kg DESC LIMIT 10";
+
+        await using var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            var fish = new FishCatch()
+            {
+                UserId = (ulong)(long)reader["user_id"],
+                FishName = (string)reader["fish_name"],
+                AdjectiveName = (string)reader["adjective"],
+                WeightKg = (decimal)(double)reader["weight_kg"],
+                Points = (decimal)(double)reader["points"],
+                Rarity = (int)(long)reader["rarity"],
+                IsSpecial = (long)reader["is_special"] == 1,
+                CaughtAt = DateTime.Parse((string)reader["caught_at"])
+            };
+
+            result.Add(fish);
+        }
+
+        return result;
+    }
+
+    public async Task<List<FishCatch>> GetTop10WorstByWeight()
+    {
+        var result = new List<FishCatch>();
+
+        await using var connection = new SqliteConnection(connectionString);
+        await connection.OpenAsync();
+
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT * FROM leaderboard ORDER BY weight_kg ASC LIMIT 10";
+
+        await using var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            var fish = new FishCatch()
+            {
+                UserId = (ulong)(long)reader["user_id"],
+                FishName = (string)reader["fish_name"],
+                AdjectiveName = (string)reader["adjective"],
+                WeightKg = (decimal)(double)reader["weight_kg"],
+                Points = (decimal)(double)reader["points"],
                 Rarity = (int)(long)reader["rarity"],
                 IsSpecial = (long)reader["is_special"] == 1,
                 CaughtAt = DateTime.Parse((string)reader["caught_at"])

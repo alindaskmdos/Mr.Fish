@@ -26,7 +26,7 @@ public static class Extension
         slash.RegisterCommands<FishModule>();
         slash.RegisterCommands<HelpModule>();
         slash.RegisterCommands<LeaderboardModule>();
-        slash.RegisterCommands<LooserboardModule>();
+        slash.RegisterCommands<LoserboardModule>();
 
         return discordClient;
     }
@@ -53,7 +53,7 @@ public static class Extension
                     fish_name   TEXT NOT NULL,
                     adjective   TEXT NOT NULL,
                     weight_kg   REAL NOT NULL,
-                    points      INTEGER NOT NULL,
+                    points      REAL NOT NULL,
                     rarity      INTEGER NOT NULL,
                     is_special  INTEGER NOT NULL,
                     caught_at   TEXT NOT NULL

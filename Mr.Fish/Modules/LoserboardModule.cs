@@ -3,18 +3,28 @@ using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using DSharpPlus.SlashCommands.Attributes;
 using Fish.Repositories;
+using Fish.Models.Enums;
+using System.Diagnostics;
 
 
 namespace Fish.Modules;
 
-public class LooserboardModule(LeaderboardRepository leaderboardRepository)
+public class LoserboardModule(LeaderboardRepository leaderboardRepository)
     : ApplicationCommandModule
 {
-    [SlashCommand("looserboard", "топ 10 рыбов")]
+    [SlashCommand("loserboard", "топ 10 рыбов")]
     [SlashCooldown(1, 5, SlashCooldownBucketType.User)]
-    public async Task LooserboardCommand(InteractionContext ctx)
+    public async Task LoserboardCommand(
+        InteractionContext ctx,
+        [Option("type", "Тип лидерборда")] LeaderboardType type = LeaderboardType.Points
+    )
     {
-        var top = await leaderboardRepository.GetTop10Worse();
+        var top = (type) switch
+        {
+            (LeaderboardType.Points) => await leaderboardRepository.GetTop10WorstByPoints(),
+            (LeaderboardType.Weight) => await leaderboardRepository.GetTop10WorstByWeight(),
+            _ => await leaderboardRepository.GetTop10WorstByPoints(),
+        };
 
         if (top.Count == 0)
         {
@@ -45,7 +55,7 @@ public class LooserboardModule(LeaderboardRepository leaderboardRepository)
                 userName = $"<@{fish.UserId}>";
             }
 
-            lines.Add($"{place} **{userName}** — {fishName} · `{fish.Points} очков` · {fish.WeightKg:F2} кг");
+            lines.Add($"{place} **{userName}** — {fishName} · `{fish.Points:F2} очков` · {fish.WeightKg:F2} кг");
         }
 
         string reply = $"🏆 **Топ рыбаков**\n\n{string.Join("\n", lines)}";

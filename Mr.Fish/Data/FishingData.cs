@@ -173,7 +173,7 @@ public class FishingData
         new() { Name = "Грустный хомяк", Description = "*Смотрит на тебя огромными глазами. Где-то вдалеке играет очень маленькая скрипка.*", MinWeightKg = 0.05m, MaxWeightKg = 0.10m, Rarity = 61 },
         new() { Name = "Флаттершай", Description = "*Самая добрая рыба. Извиняется за то, что отвлекает тебя от тишины. Просит отпустить.*", MinWeightKg = 0.30m, MaxWeightKg = 0.60m, Rarity = 61 },
         new() { Name = "Рыба-Менеджер", Description = "*Приплыла без повестки, заняла всё пространство и ушла с экшн-поинтами.*", MinWeightKg = 1.00m, MaxWeightKg = 3.50m, Rarity = 62 },
-        new() { Name = "Рыба-Дудь", Description = "*Сразу после поклевки спрашивает: 'Сколько ты весишь?, Окажитесь перед Краккеном, что скажете?'.*", MinWeightKg = 60.00m, MaxWeightKg = 85.00m, Rarity = 62 },
+        new() { Name = "Рыба-Дудь", Description = "*Сразу после поклевки спрашивает: 'Сколько ты весишь?, Окажитесь перед Кракеном, что скажете?'.*", MinWeightKg = 60.00m, MaxWeightKg = 85.00m, Rarity = 62 },
         new() { Name = "Копатыч", Description = "*Бурый медведь в воде. Ищет пчелиный улей на дне. Очень меланхоличный и очень большой.*", MinWeightKg = 3.00m, MaxWeightKg = 8.00m, Rarity = 62 },
         new() { Name = "Эпплджек", Description = "*Честный карась из Понивиля. Пахнет яблоками и тяжелым трудом на ферме.*", MinWeightKg = 1.20m, MaxWeightKg = 3.00m, Rarity = 63 },
         new() { Name = "Инфлюенсер-карась", Description = "*Снимает рилсы прямо на крючке. Подписаться не предлагает, но очень хочет.*", MinWeightKg = 0.20m, MaxWeightKg = 0.70m, Rarity = 63 },
@@ -273,7 +273,7 @@ public class FishingData
         new() { Name = "Старлайт Глиммер", Description = "*Бывшая культистка, теперь тоже исправилась. Равенство для всех рыб! Вес у всех одинаковый, нравится тебе или нет.*", MinWeightKg = 1.00m, MaxWeightKg = 3.00m, Rarity = 95 },
         new() { Name = "Рыба-Танос", Description = "*Щелкнула плавниками — и половина твоей наживки исчезла из инвентаря.*", MinWeightKg = 50.00m, MaxWeightKg = 100.00m, Rarity = 95 },
         new() { Name = "Рыба-Админ", Description = "*Может изменить шанс клева прямо во время боя.*", MinWeightKg = 2.00m, MaxWeightKg = 8.00m, Rarity = 95 },
-        new() { Name = "Хорнет", Description = "*SHAW! Прыгает по леске быстрее, чем ты моргнёшь.*", MinWeightKg = 0.30m, MaxWeightKg = 0.90m, Rarity = 96 },
+        new() { Name = "Хорнет", Description ="*Защитница руин, облачённая в багряный шёлк. Она не просто плавает, а выписывает сложные пируэты, опутывая твою снасть тончайшей иглами-нитями. Поймать её — значит доказать, что ты чего-то стоишь, но её истинные цели всегда остаются скрыты в глубине.*", MinWeightKg = 0.30m, MaxWeightKg = 0.90m, Rarity = 96 },
         new() { Name = "Дарт Вейдер", Description = "*Люк, я твой окунь! Удушает поплавок силой мысли. Ненавидит песок на берегу.*", MinWeightKg = 90.00m, MaxWeightKg = 130.00m, Rarity = 97 },
         new() { Name = "Рыба-Годзилла", Description = "*Гигантская древняя тварь. Когда клюёт — половина водоёма эвакуируется.*", MinWeightKg = 80.00m, MaxWeightKg = 250.00m, Rarity = 97 },
         new() { Name = "Великий и Ужасный Нярлантотеп", Description = "*Древний космический ужас в форме витуберши. Вода начинает шептать странные вещи.*", MinWeightKg = 2.00m, MaxWeightKg = 6.00m, Rarity = 97 },
@@ -384,10 +384,8 @@ public class FishingData
         return weight;
     }
 
-    public int GetPoints(FishEntry fish, FishAdjective adjective, decimal weightKg)
+    public decimal GetPoints(FishEntry fish, FishAdjective adjective, decimal weightKg)
     {
-        decimal final = fish.Rarity * adjective.Multiplier * (weightKg / fish.MaxWeightKg);
-
-        return (int)Math.Round(final, MidpointRounding.AwayFromZero);
+        return fish.Rarity * adjective.Multiplier * (weightKg / fish.MaxWeightKg);
     }
 }

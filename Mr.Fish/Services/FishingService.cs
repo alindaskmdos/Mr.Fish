@@ -12,7 +12,7 @@ public class FishingService(FishingData data)
         double u = Random.Shared.NextDouble();
         double maxExp = Math.Exp(-lambda * 100);
         double roll = -Math.Log(1 - u * (1 - maxExp)) / lambda;
-        int result = 100 - (int)roll;
+        int result = (int)roll;
 
         var minDiff = data.Fish
                         .Where(f => result >= f.Rarity)

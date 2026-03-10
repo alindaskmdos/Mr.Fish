@@ -1,11 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using DSharpPlus;
 using Fish.Extension;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Data.Sqlite;
-using Fish.Services;
 
 
 public class Program
@@ -14,7 +10,9 @@ public class Program
     {
         var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true)
+            .AddEnvironmentVariables()
             .Build();
 
         string token = config["Discord:Token"]!;
