@@ -14,16 +14,17 @@ public class FishModule(FishingService fishingService, LeaderboardRepository lea
     [SlashCooldown(1, 3, SlashCooldownBucketType.User)]
     public async Task FishCommand(InteractionContext ctx)
     {
-        var (fish, description) = fishingService.RollFish(ctx.User.Id);
+        var (fish, description, isFishOfTheDay) = fishingService.RollFish(ctx.User.Id);
         await leaderboardRepository.Save(fish);
 
         string fishName = fish.IsSpecial ? $"★ {fish.FishName} ★" : fish.FishName;
+        string fishOfTheDayBonus = isFishOfTheDay ? "\n**Бонус рыбы дня:** `x1.5`" : "";
 
         string reply = $"**{fish.AdjectiveName} {fishName}**\n\n" +
                        $"{description} \n\n" +
                        $"**Вес:** `{fish.WeightKg:F6} кг`\n" +
                        $"**Редкость:** `{fish.Rarity}` \n" +
-                       $"**Очки:** `{fish.Points:F2}`";
+                       $"**Очки:** `{fish.Points:F2}`{fishOfTheDayBonus}";
 
         await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
             new DiscordInteractionResponseBuilder().WithContent(reply).AsEphemeral(true));

@@ -4,7 +4,6 @@ using DSharpPlus.SlashCommands;
 using DSharpPlus.SlashCommands.Attributes;
 using Fish.Repositories;
 using Fish.Models.Enums;
-using System.Diagnostics;
 
 
 namespace Fish.Modules;

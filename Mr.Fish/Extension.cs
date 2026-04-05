@@ -27,6 +27,9 @@ public static class Extension
         slash.RegisterCommands<HelpModule>();
         slash.RegisterCommands<LeaderboardModule>();
         slash.RegisterCommands<LoserboardModule>();
+        slash.RegisterCommands<RareFishModule>();
+        slash.RegisterCommands<StatsModule>();
+        slash.RegisterCommands<FishOfTheDayModule>();
 
         return discordClient;
     }

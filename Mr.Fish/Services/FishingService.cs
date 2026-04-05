@@ -5,7 +5,17 @@ namespace Fish.Services;
 
 public class FishingService(FishingData data)
 {
-    public (FishCatch, string) RollFish(ulong userId)
+    public FishEntry GetFishOfTheDay(DateTime? now = null)
+    {
+        var currentDate = (now ?? DateTime.UtcNow).Date;
+        int seed = currentDate.Year * 10000 + currentDate.Month * 100 + currentDate.Day;
+        var random = new Random(seed);
+        int index = random.Next(data.Fish.Length);
+
+        return data.Fish[index];
+    }
+
+    public (FishCatch, string, bool) RollFish(ulong userId)
     {
         const double lambda = 0.025;
 
@@ -35,6 +45,10 @@ public class FishingService(FishingData data)
         var points = data.GetPoints(fish, adjective, weight);
         if (isSpecial) points = (int)(points * 1.5m);
 
+        var fishOfTheDay = GetFishOfTheDay();
+        bool isFishOfTheDay = string.Equals(fish.Name, fishOfTheDay.Name, StringComparison.Ordinal);
+        if (isFishOfTheDay) points *= 1.5m;
+
         return (new FishCatch
         {
             UserId = userId,
@@ -45,6 +59,6 @@ public class FishingService(FishingData data)
             Rarity = fish.Rarity,
             IsSpecial = isSpecial,
             CaughtAt = DateTime.UtcNow
-        }, description);
+        }, description, isFishOfTheDay);
     }
 }
