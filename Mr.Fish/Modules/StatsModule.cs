@@ -3,10 +3,14 @@ using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using DSharpPlus.SlashCommands.Attributes;
 using Fish.Repositories;
+using Fish.Services;
 
 namespace Fish.Modules;
 
-public class StatsModule(LeaderboardRepository leaderboardRepository)
+public class StatsModule(
+    LeaderboardRepository leaderboardRepository,
+    EconomyRepository economyRepository,
+    EconomyService economyService)
     : ApplicationCommandModule
 {
     [SlashCommand("mystats", "Личная статистика рыбалки")]
@@ -14,6 +18,8 @@ public class StatsModule(LeaderboardRepository leaderboardRepository)
     public async Task MyStatsCommand(InteractionContext ctx)
     {
         var stats = await leaderboardRepository.GetUserStats(ctx.User.Id);
+        var economyProfile = await economyRepository.GetOrCreate(ctx.User.Id);
+        var currentRod = economyService.GetCurrentRodOrDefault(economyProfile.RodTier);
 
         if (stats is null)
         {
@@ -27,6 +33,7 @@ public class StatsModule(LeaderboardRepository leaderboardRepository)
                        $"**Общий вес:** `{stats.TotalWeightKg:F2} кг`\n" +
                        $"**Средний вес:** `{stats.AverageWeightKg:F2} кг`\n" +
                        $"**Сумма очков:** `{stats.TotalPoints:F2}`\n" +
+                       $"**Удочка:** `{currentRod.Name}` (`Удача +{currentRod.LuckBonus}`)\n" +
                        $"**Лучший улов по очкам:** `{stats.BestPoints:F2}` ({stats.BestFishName})\n" +
                        $"**Максимальная редкость:** `{stats.MaxRarity}` ({stats.RarestFishName})";
 

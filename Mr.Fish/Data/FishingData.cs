@@ -377,6 +377,25 @@ public class FishingData
         new() { Name = "РЫБОВ (ТОТ САМЫЙ)", Multiplier = 10.00m, Rarity = 1 }
     };
 
+    public readonly RodOffer[] Rods =
+    {
+        new() { Tier = 0, Name = "Прутик Деда Максима", Price = 0, LuckBonus = 0 },
+        new() { Tier = 1, Name = "Карась Экспресс", Price = 80, LuckBonus = 1 },
+        new() { Tier = 2, Name = "Поплавок Судьбы", Price = 170, LuckBonus = 2 },
+        new() { Tier = 3, Name = "Шлепа Про 2.0", Price = 320, LuckBonus = 3 },
+        new() { Tier = 4, Name = "Нейро Крючок", Price = 520, LuckBonus = 4 },
+        new() { Tier = 5, Name = "Кракенобой Лайт", Price = 780, LuckBonus = 5 },
+        new() { Tier = 6, Name = "Усатый Рейлган", Price = 1100, LuckBonus = 6 },
+        new() { Tier = 7, Name = "Царь Поплавок", Price = 1500, LuckBonus = 7 },
+        new() { Tier = 8, Name = "Тройник Апокалипсиса", Price = 2050, LuckBonus = 8 },
+        new() { Tier = 9, Name = "Банхаммер Нептуна", Price = 2750, LuckBonus = 9 },
+        new() { Tier = 10, Name = "Гравицапа Рыбака", Price = 3600, LuckBonus = 10 },
+        new() { Tier = 11, Name = "Реликт Океана", Price = 4700, LuckBonus = 12 },
+        new() { Tier = 12, Name = "Квантовый Спиннинг", Price = 6100, LuckBonus = 14 },
+        new() { Tier = 13, Name = "Чешуйчатый Разлом", Price = 7900, LuckBonus = 16 },
+        new() { Tier = 14, Name = "Трон Посейдона", Price = 9900, LuckBonus = 18 }
+    };
+
     public decimal GetWeight(FishEntry fish)
     {
         decimal weight = (decimal)Random.Shared.NextDouble() * (fish.MaxWeightKg - fish.MinWeightKg) + fish.MinWeightKg;

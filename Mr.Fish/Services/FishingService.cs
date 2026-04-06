@@ -15,14 +15,17 @@ public class FishingService(FishingData data)
         return data.Fish[index];
     }
 
-    public (FishCatch, string, bool) RollFish(ulong userId)
+    public (FishCatch, string, bool) RollFish(ulong userId, int luckBonus = 0)
     {
         const double lambda = 0.025;
 
         double u = Random.Shared.NextDouble();
         double maxExp = Math.Exp(-lambda * 100);
         double roll = -Math.Log(1 - u * (1 - maxExp)) / lambda;
-        int result = (int)roll;
+
+        int safeLuckBonus = Math.Clamp(luckBonus, 0, 25);
+        int result = (int)roll + safeLuckBonus;
+        result = Math.Clamp(result, 0, 100);
 
         var minDiff = data.Fish
                         .Where(f => result >= f.Rarity)
